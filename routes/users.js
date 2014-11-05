@@ -33,14 +33,26 @@ router.route('/u/:username').get(function (req, res) {
             return res.status(404).render('error', err);
         }
 
-        res.render('users/profile', function (err, data) {
+        var locals = {
+            page: {
+                title: user.username
+            }
+        };
+
+        res.render('users/profile', locals, function (err, data) {
             return res.send(minify(data, minifyOptions));
         });
     });
 });
 
 router.route('/register').get(function (req, res) {
-    res.render('register', function (err, data) {
+    var locals = {
+        page: {
+            title: 'Register'
+        }
+    };
+
+    res.render('register', locals, function (err, data) {
         return res.send(minify(data, minifyOptions));
     });
 }).post(function (req, res) {

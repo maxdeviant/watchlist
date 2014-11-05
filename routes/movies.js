@@ -14,7 +14,13 @@ var minifyOptions = {
 var router = express.Router();
 
 router.route('/m/:slug').get(function (req, res) {
-    res.render('movies/details', function (err, data) {
+    var locals = {
+        page: {
+            title: req.params.slug
+        }
+    };
+
+    res.render('movies/details', locals, function (err, data) {
         return res.send(minify(data, minifyOptions));
     });
 });

@@ -12,7 +12,13 @@ var minifyOptions = {
 var router = express.Router();
 
 router.route('/').get(function (req, res) {
-    res.render('index', function (err, data) {
+    var locals = {
+        page: {
+            title: 'Home'
+        }
+    };
+
+    res.render('index', locals, function (err, data) {
         return res.send(minify(data, minifyOptions));
     });
 });
