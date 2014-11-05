@@ -10,6 +10,7 @@ var path = require('path');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var movies = require('./routes/movies');
 
 mongoose.connect('mongodb://localhost/watchlist');
 
@@ -29,6 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/', users);
+app.use('/', movies);
 
 app.use(function (req, res, next) {
     var err = new Error('Not Found');
