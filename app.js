@@ -7,6 +7,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var mongoose = require('mongoose');
 var path = require('path');
+var session = require('cookie-session');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -26,6 +27,9 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(session({
+    keys: [ 'DEV1', 'DEV2' ]
+}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);

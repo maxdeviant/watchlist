@@ -41,6 +41,44 @@ router.route('/u/:username').get(function (req, res) {
     });
 });
 
+router.route('/login').get(function (req, res) {
+    var locals = {
+        page: {
+            title: 'Login'
+        }
+    };
+
+    res.render('login', locals, function (err, data) {
+        return res.send(minify(data, config.minifyOptions));
+    });
+}).post(function (req, res) {
+    User.findOne({
+        username: req.body.username
+    }, function (err, user) {
+        if (err) {
+            throw err;
+        }
+
+        if (user === null) {
+            return;
+        }
+
+        user.comparePassword(req.body.password, function (err, isMatch) {
+            if (err) {
+                throw err;
+            }
+
+            if (isMatch) {
+                req.session.username = user.username;
+
+                return res.redirect('/u/' + user.username);
+            }
+
+            return res.redirect('/login');
+        });
+    });
+});
+
 router.route('/register').get(function (req, res) {
     var locals = {
         page: {
