@@ -36,7 +36,8 @@ router.route('/u/:username').get(function (req, res) {
         var locals = {
             page: {
                 title: user.username
-            }
+            },
+            user: user
         };
 
         res.render('users/profile', locals, function (err, data) {
