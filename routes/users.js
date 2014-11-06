@@ -5,6 +5,7 @@ var express = require('express');
 var minify = require('html-minifier').minify;
 
 var User = require('../models/user');
+var List = require('../models/list');
 
 var router = express.Router();
 
@@ -28,15 +29,24 @@ router.route('/u/:username').get(function (req, res) {
             return res.status(404).render('error', err);
         }
 
-        var locals = {
-            page: {
-                title: user.username
-            },
-            user: user
-        };
+        List.find({
+            _user: user._id
+        }, function (err, lists) {
+            if (err) {
+                throw err;
+            }
 
-        res.render('users/profile', locals, function (err, data) {
-            return res.send(minify(data, config.minifyOptions));
+            var locals = {
+                page: {
+                    title: user.username
+                },
+                user: user,
+                lists: lists
+            };
+
+            res.render('users/profile', locals, function (err, data) {
+                return res.send(minify(data, config.minifyOptions));
+            });
         });
     });
 });

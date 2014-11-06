@@ -11,6 +11,7 @@ var session = require('cookie-session');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var lists = require('./routes/lists');
 var movies = require('./routes/movies');
 
 mongoose.connect('mongodb://localhost/watchlist');
@@ -34,6 +35,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/', users);
+app.use('/', lists);
 app.use('/', movies);
 
 app.use(function (req, res, next) {
