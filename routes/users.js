@@ -1,15 +1,10 @@
 'use strict';
 
+var config = require('../config');
 var express = require('express');
 var minify = require('html-minifier').minify;
 
 var User = require('../models/user');
-
-var minifyOptions = {
-    removeComments: true,
-    collapseWhitespace: true,
-    conservativeCollapse: true
-};
 
 var router = express.Router();
 
@@ -41,7 +36,7 @@ router.route('/u/:username').get(function (req, res) {
         };
 
         res.render('users/profile', locals, function (err, data) {
-            return res.send(minify(data, minifyOptions));
+            return res.send(minify(data, config.minifyOptions));
         });
     });
 });
@@ -54,7 +49,7 @@ router.route('/register').get(function (req, res) {
     };
 
     res.render('register', locals, function (err, data) {
-        return res.send(minify(data, minifyOptions));
+        return res.send(minify(data, config.minifyOptions));
     });
 }).post(function (req, res) {
     var user = new User();

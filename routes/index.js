@@ -1,13 +1,8 @@
 'use strict';
 
+var config = require('../config');
 var express = require('express');
 var minify = require('html-minifier').minify;
-
-var minifyOptions = {
-    removeComments: true,
-    collapseWhitespace: true,
-    conservativeCollapse: true
-};
 
 var router = express.Router();
 
@@ -19,7 +14,7 @@ router.route('/').get(function (req, res) {
     };
 
     res.render('index', locals, function (err, data) {
-        return res.send(minify(data, minifyOptions));
+        return res.send(minify(data, config.minifyOptions));
     });
 });
 
