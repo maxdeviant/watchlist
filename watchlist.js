@@ -1,17 +1,26 @@
-if (Meteor.isClient) {
-    // counter starts at 0
-    Session.setDefault('counter', 0);
+'use strict';
 
-    Template.hello.helpers({
-        counter: function () {
-            return Session.get('counter');
+var Users = new Mongo.Collection('users');
+
+if (Meteor.isClient) {
+    Template.body.helpers({
+        users: function () {
+            return Users.find({});
         }
     });
 
-    Template.hello.events({
-        'click button': function () {
-            // increment the counter when button is clicked
-            Session.set('counter', Session.get('counter') + 1);
+    Template.body.events({
+        'submit .new-user': function (event) {
+            var username = event.target.username.value;
+
+            Users.insert({
+                username: username,
+                createdAt: new Date()
+            });
+
+            event.target.username.value = '';
+
+            return false;
         }
     });
 }
