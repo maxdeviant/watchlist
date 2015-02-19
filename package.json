@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/maxdeviant/watchlist/issues"
   },
-  "homepage": "https://github.com/maxdeviant/watchlist"
+  "homepage": "https://github.com/maxdeviant/watchlist",
+  "dependencies": {
+    "react": "^0.12.2"
+  }
 }

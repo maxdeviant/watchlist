@@ -1,0 +1,29 @@
+.movie {
+
+}
+
+.movie .title {
+    padding: 0 20px;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.movie-list {
+    border: 1px solid #ddd;
+}
+
+.movie-list .title {
+    font-size: 20px;
+}
+
+.friend .username {
+
+}
+
+.friend-list {
+    border: 1px solid #ddd;
+}
+
+.friend-list .title {
+    font-size: 20px;
+}
