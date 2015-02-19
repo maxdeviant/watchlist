@@ -1,32 +1,86 @@
 'use strict';
 
-var Users = new Mongo.Collection('users');
+var Lists = new Mongo.Collection('lists');
 
 if (Meteor.isClient) {
+    Router.configure({
+        layoutTemplate: 'layout'
+    });
+
+    Router.route('/', function () {
+        this.render('home', {
+            data: function () {
+                return {title: 'Hello'}
+            }
+        });
+    });
+
+    Router.route('/u/:username', function () {
+        var username = this.params.username;
+
+        this.render('user', {
+            data: function () {
+                return Meteor.users.findOne({
+                    username: username
+                });
+            }
+        })
+    });
+
+    Meteor.subscribe('lists');
+    Meteor.subscribe('users');
+
     Template.body.helpers({
-        users: function () {
-            return Users.find({});
+        lists: function () {
+            return Lists.find({});
         }
     });
 
     Template.body.events({
-        'submit .new-user': function (event) {
-            var username = event.target.username.value;
+        'submit .new-list': function (event) {
+            var title = event.target.title.value;
 
-            Users.insert({
-                username: username,
-                createdAt: new Date()
-            });
+            Meteor.call('createList', title);
 
-            event.target.username.value = '';
+            event.target.title.value = '';
 
             return false;
         }
     });
+
+    Accounts.ui.config({
+        passwordSignupFields: 'USERNAME_ONLY'
+    });
 }
+
+Meteor.methods({
+    createList: function (title) {
+        if (!Meteor.userId()) {
+            throw new Meteor.Error('not-authorized');
+        }
+
+        Lists.insert({
+            title: title,
+            createdAt: new Date(),
+            owner: Meteor.userId(),
+            username: Meteor.user().username
+        });
+    },
+    deleteList: function (listId) {
+        Lists.remove(listId);
+    }
+})
 
 if (Meteor.isServer) {
     Meteor.startup(function () {
-        // code to run on server at startup
+
+    });
+
+    Meteor.publish('users', function () {
+        return Meteor.users.find();
+    });
+
+    Meteor.publish('lists', function () {
+        return Lists.find();
     });
 }

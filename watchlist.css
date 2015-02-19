@@ -1,1 +1,30 @@
-/* CSS declarations go here */
+* {
+    margin: 0 auto;
+}
+
+.container {
+    width: 960px;
+    margin: 0 auto;
+}
+
+.header {
+    height: 25px;
+    padding: 25px;
+    background: #eee;
+}
+
+.right {
+    float: right;
+}
+
+.user {
+
+}
+
+.user .profile {
+
+}
+
+.user .profile .username {
+    color: #222;
+}

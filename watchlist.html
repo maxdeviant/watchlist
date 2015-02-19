@@ -1,22 +1,48 @@
 <head>
-    <title>watchlist</title>
+    <title>Watchlist</title>
 </head>
 
-<body>
-    <h1>Welcome to Watchlist!</h1>
+<template name="layout">
+    {{> header}}
     <div class="container">
+        {{> yield}}
+        <!-- <div class="header">
+            <a class="logo" href="/">Watchlist</a>
+
+            <div class="right">
+                {{> loginButtons}}
+            </div>
+        </div>
         <ul>
-            {{#each users}}
-                {{> user}}
+            {{#each lists}}
+                {{> list}}
             {{/each}}
         </ul>
-    </div>
 
-    <form class="new-user">
-        <input type="text" name="username" placeholder="Username">
-    </form>
-</body>
+        <form class="new-list">
+            <input type="text" name="title" placeholder="List Title">
+        </form> -->
+    </div>
+</template>
+
+<template name="header">
+    <div class="header">
+        <span>Watchlist</span>
+    </div>
+</template>
+
+<template name="list">
+    <li>{{title}} by {{username}}</li>
+</template>
+
+<template name="home">
+    <h1>Watchlist</h1>
+</template>
 
 <template name="user">
-    <li>{{username}}</li>
+    <div class="user">
+        <div class="profile">
+            <h1 class="username">{{username}}</h1>
+        </div>
+    </div>
 </template>
