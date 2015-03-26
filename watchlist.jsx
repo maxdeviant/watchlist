@@ -3,11 +3,10 @@
 var Movie = React.createClass({
 
     render: function() {
-        var url = 'movies/' + this.props.title;
 
         return (
             <div className="movie">
-                <a className="title" href={url}>{this.props.title}</a>
+                <a className="title" href={'movies/' + this.props.title}>{this.props.title}</a>
             </div>
         );
     }
@@ -19,7 +18,7 @@ var MovieList = React.createClass({
     render: function() {
         var movies = this.props.data.map(function (movie) {
             return (
-                <Movie title={movie.title} />
+                <Movie key={movie.title} title={movie.title} />
             );
         });
 
@@ -38,7 +37,7 @@ var Friend = React.createClass({
     render: function() {
         return (
             <div className="friend">
-                <a className="username">{this.props.username}</a>
+                <a className="username" href={'u/' + this.props.username}>{this.props.username}</a>
             </div>
         );
     }
@@ -50,7 +49,7 @@ var FriendList = React.createClass({
     render: function() {
         var friends = this.props.data.map(function (friend) {
             return (
-                <Friend username={friend.username} />
+                <Friend key={friend.username} username={friend.username} />
             );
         });
 
