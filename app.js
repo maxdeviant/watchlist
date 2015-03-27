@@ -79,6 +79,17 @@ router.route('/register')
                     return res.render('register');
                 }
 
+                var expires = new Date();
+                expires.setDate(expires.getDate() + 7);
+
+                var token = jwt.encode({
+                    iss: user._id,
+                    username: user.username,
+                    expires: expires
+                }, app.get('jwtTokenSecret'));
+
+                req.session.token = token;
+
                 return res.redirect('/');
             });
         });
