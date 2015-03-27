@@ -156,6 +156,12 @@ router.route('/u/:username')
                 title: user.username
             };
 
+            app.locals.user = {
+                username: user.username,
+                firstName: user.firstName,
+                lastName: user.lastName
+            };
+
             return res.render('user.ejs');
         });
     });
