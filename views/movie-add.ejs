@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <% include _head %>
+</head>
+<body>
+    <div class="container">
+        <form method="post" action="/movies">
+            <div>
+                <label for="title">Title</label>
+                <input type="text" name="title">
+            </div>
+            <div>
+                <label for="year">Year</label>
+                <input type="number" name="year">
+            </div>
+            <input type="submit" value="Add">
+        </form>
+        <% if (error) { %>
+            <span><%= error %></span>
+        <% } %>
+    </div>
+    <% include _footer %>
+</body>
+</html>

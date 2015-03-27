@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <% include _head %>
+</head>
+<body>
+    <% include _navigation %>
+    <div class="container">
+        <a href="/movies/add">Add Movie</a>
+        <div class="movie">
+            <% for (var i = 0; i < movies.length; i++) { %>
+                <div>
+                    <h1><a href="/movies/<%= movies[i].slug %>"><%= movies[i].title %>&nbsp;(<%= movies[i].year %>)</a></h1>
+                </div>
+            <% } %>
+        </div>
+    </div>
+    <% include _footer %>
+</body>
+</html>

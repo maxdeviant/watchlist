@@ -11,6 +11,7 @@ var jwtauth = require('./lib/jwt-auth');
 var mongoose = require('mongoose');
 
 var User = require('./models/user');
+var Movie = require('./models/movie');
 
 mongoose.connect('mongodb://localhost/watchlist');
 
@@ -163,6 +164,72 @@ router.route('/u/:username')
             };
 
             return res.render('user.ejs');
+        });
+    });
+
+router.route('/movies')
+    .get([jwtauth], function (req, res) {
+        app.locals.page = {
+            title: 'Movies'
+        };
+
+        Movie.find(function (err, movies) {
+            if (err) {
+
+            }
+
+            app.locals.movies = movies;
+
+            return res.render('movie-list');
+        });
+    })
+    .post([jwtauth], function (req, res) {
+        var movie = new Movie();
+
+        movie.title = req.body.title;
+        movie.year = req.body.year;
+
+        movie.save(function (err) {
+            if (err) {
+
+            }
+
+            return res.redirect('/movies/' + movie.slug);
+        });
+    });
+
+router.route('/movies/add')
+    .get([jwtauth], function (req, res) {
+        app.locals.page = {
+            title: 'Add Movie'
+        };
+
+        return res.render('movie-add');
+    });
+
+router.route('/movies/:slug')
+    .get([jwtauth], function (req, res) {
+        Movie.findOne({
+            slug: req.params.slug
+        }, function (err, movie) {
+            if (err || movie === null) {
+                app.locals.page = {
+                    title: '404'
+                };
+
+                return res.render('errors/404');
+            }
+
+            app.locals.page = {
+                title: movie.title
+            };
+
+            app.locals.movie = {
+                title: movie.title,
+                year: movie.year
+            };
+
+            return res.render('movie.ejs');
         });
     });
 

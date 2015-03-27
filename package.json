@@ -23,7 +23,8 @@
     "express": "^4.11.2",
     "express-session": "^1.10.4",
     "jwt-simple": "^0.2.0",
-    "mongoose": "^4.0.0"
+    "mongoose": "^4.0.0",
+    "mongoose-troop": "0.0.8"
   },
   "devDependencies": {
     "gulp": "^3.8.11",
