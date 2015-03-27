@@ -5,7 +5,7 @@
 </head>
 <body>
     <div class="container">
-        <form>
+        <form method="post" action="/login">
             <div>
                 <label for="username">Username</label>
                 <input type="text" name="username">
@@ -16,6 +16,9 @@
             </div>
             <input type="submit" value="login">
         </form>
+        <% if (error) { %>
+            <span><%= error %></span>
+        <% } %>
     </div>
     <% include _footer %>
 </body>

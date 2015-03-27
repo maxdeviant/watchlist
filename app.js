@@ -3,6 +3,10 @@
 var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
+var jwt = require('jwt-simple');
+var session = require('express-session');
+
+var jwtauth = require('./lib/jwt-auth');
 
 var mongoose = require('mongoose');
 
@@ -11,6 +15,14 @@ var User = require('./models/user');
 mongoose.connect('mongodb://localhost/watchlist');
 
 var app = express();
+
+app.set('jwtTokenSecret', 'YWxzamZrc2FkaGZsc2pkZmxhc2RqZnNkZmFzZGY=');
+
+app.use(session({
+    secret: 'SUPER_SECRET_KEY',
+    saveUninitialized: true,
+    resave: true
+}));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -77,7 +89,75 @@ router.route('/login')
             title: 'Log In'
         };
 
+        app.locals.error = '';
+
         return res.render('login');
+    })
+    .post(function (req, res) {
+        User.findOne({
+            username: req.body.username
+        }, function (err, user) {
+            if (err) {
+                app.locals.error = 'An error occurred during login.';
+
+                return res.render('login');
+            }
+
+            if (user === null) {
+                app.locals.error = 'Invalid username and/or password.';
+
+                return res.render('login');
+            }
+
+            user.comparePassword(req.body.password, function (err, isMatch) {
+                if (isMatch) {
+                    var expires = new Date();
+                    expires.setDate(expires.getDate() + 7);
+
+                    var token = jwt.encode({
+                        iss: user._id,
+                        username: user.username,
+                        expires: expires
+                    }, app.get('jwtTokenSecret'));
+
+                    req.session.token = token;
+
+                    return res.redirect('/');
+                }
+
+                app.locals.error = 'Invalid username and/or password.';
+
+                return res.render('login');
+            });
+        });
+    });
+
+router.route('/logout')
+    .get(function (req, res) {
+        req.session.destroy(function (err) {
+            return res.redirect('login');
+        });
+    });
+
+router.route('/u/:username')
+    .get([jwtauth], function (req, res) {
+        User.findOne({
+            username: req.params.username
+        }, function (err, user) {
+            if (err || user === null) {
+                app.locals.page = {
+                    title: '404'
+                };
+
+                return res.render('errors/404')
+            }
+
+            app.locals.page = {
+                title: user.username
+            };
+
+            return res.render('user.ejs');
+        });
     });
 
 app.use('/', router);
